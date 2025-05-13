@@ -1,0 +1,11 @@
+<clickhouse>
+    <users>
+        <default>
+            <password>11111</password>
+            <networks>
+                <ip>::/0</ip>  <!-- Разрешаем подключение от всех -->
+            </networks>
+            <access_management>1</access_management>
+        </default>
+    </users>
+</clickhouse>

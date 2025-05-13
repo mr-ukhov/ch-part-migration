@@ -1,0 +1,6 @@
+<clickhouse>
+    <macros>
+        <node>node4</node>>
+        <replica>replica4</replica>
+    </macros>
+</clickhouse>

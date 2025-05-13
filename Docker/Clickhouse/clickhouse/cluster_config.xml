@@ -1,0 +1,43 @@
+<clickhouse>
+    <!-- Добавляем Keeper -->
+    <keeper>
+        <node>
+            <host>clickhouse-keeper</host>
+            <port>9181</port>
+        </node>
+    </keeper>
+
+    <!-- Определяем порты для ClickHouse -->
+    <listen_host>0.0.0.0</listen_host>
+    <tcp_port>9000</tcp_port>
+    <http_port>8123</http_port>
+
+    <!-- Описание кластера -->
+    <remote_servers>
+        <all_replicated>
+            <shard>
+                <replica><host>clickhouse-node1</host> <port>9000</port><user>default</user><password>11111</password></replica>
+                <replica><host>clickhouse-node2</host> <port>9000</port><user>default</user><password>11111</password></replica>
+                <replica><host>clickhouse-node3</host> <port>9000</port><user>default</user><password>11111</password></replica>
+                <replica><host>clickhouse-node4</host> <port>9000</port><user>default</user><password>11111</password></replica>
+            </shard>
+        </all_replicated>
+        <all_sharded>
+            <shard><replica><host>clickhouse-node1</host> <port>9000</port><user>default</user><password>11111</password></replica></shard>
+            <shard><replica><host>clickhouse-node2</host> <port>9000</port><user>default</user><password>11111</password></replica></shard>
+            <shard><replica><host>clickhouse-node3</host> <port>9000</port><user>default</user><password>11111</password></replica></shard>
+            <shard><replica><host>clickhouse-node4</host> <port>9000</port><user>default</user><password>11111</password></replica></shard>
+        </all_sharded>
+        <main>
+            <shard>
+                <replica><host>clickhouse-node1</host> <port>9000</port><user>default</user><password>11111</password></replica>
+                <replica><host>clickhouse-node3</host> <port>9000</port><user>default</user><password>11111</password></replica>
+            </shard>
+            <shard>
+                <replica><host>clickhouse-node2</host> <port>9000</port><user>default</user><password>11111</password></replica>
+                <replica><host>clickhouse-node4</host> <port>9000</port><user>default</user><password>11111</password></replica>
+            </shard>
+        </main>>
+    </remote_servers>
+
+</clickhouse>

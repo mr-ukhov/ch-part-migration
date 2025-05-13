@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  clickhouse-keeper:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-keeper
+    hostname: clickhouse-keeper
+    restart: always
+    volumes:
+      - ./ch_keeper/config.xml:/etc/clickhouse-server/config.xml
+      - ./ch_keeper/storage:/var/lib/clickhouse
+    ports:
+      - "9181:9181"
+    entrypoint: ["/usr/bin/clickhouse", "keeper", "--config-file=/etc/clickhouse-server/config.xml"]
+    networks:
+      - shared_network
+
+  clickhouse-node1:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-node1
+    hostname: clickhouse-node1
+    restart: always
+    volumes:
+      - ./clickhouse/cluster_config.xml:/etc/clickhouse-server/config.d/cluster_config.xml
+      - ./clickhouse/node1/macros.xml:/etc/clickhouse-server/config.d/macros.xml
+      - ./clickhouse/users.xml:/etc/clickhouse-server/users.d/users.xml
+      - ./clickhouse/node1/storage:/var/lib/clickhouse
+    ports:
+      - "9000:9000"
+      - "8123:8123"
+    networks:
+      - shared_network
+    depends_on:
+      - clickhouse-keeper
+
+  clickhouse-node2:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-node2
+    hostname: clickhouse-node2
+    restart: always
+    volumes:
+      - ./clickhouse/cluster_config.xml:/etc/clickhouse-server/config.d/cluster_config.xml
+      - ./clickhouse/node2/macros.xml:/etc/clickhouse-server/config.d/macros.xml
+      - ./clickhouse/users.xml:/etc/clickhouse-server/users.d/users.xml
+      - ./clickhouse/node2/storage:/var/lib/clickhouse
+    ports:
+      - "9001:9000"
+      - "8124:8123"
+    networks:
+      - shared_network
+    depends_on:
+      - clickhouse-keeper
+
+  clickhouse-node3:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-node3
+    hostname: clickhouse-node3
+    restart: always
+    volumes:
+      - ./clickhouse/cluster_config.xml:/etc/clickhouse-server/config.d/cluster_config.xml
+      - ./clickhouse/node3/macros.xml:/etc/clickhouse-server/config.d/macros.xml
+      - ./clickhouse/users.xml:/etc/clickhouse-server/users.d/users.xml
+      - ./clickhouse/node3/storage:/var/lib/clickhouse
+    ports:
+      - "9002:9000"
+      - "8125:8123"
+    networks:
+      - shared_network
+    depends_on:
+      - clickhouse-keeper
+
+  clickhouse-node4:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-node4
+    hostname: clickhouse-node4
+    restart: always
+    volumes:
+      - ./clickhouse/cluster_config.xml:/etc/clickhouse-server/config.d/cluster_config.xml
+      - ./clickhouse/node4/macros.xml:/etc/clickhouse-server/config.d/macros.xml
+      - ./clickhouse/users.xml:/etc/clickhouse-server/users.d/users.xml
+      - ./clickhouse/node4/storage:/var/lib/clickhouse
+    ports:
+      - "9003:9000"
+      - "8126:8123"
+    networks:
+      - shared_network
+    depends_on:
+      - clickhouse-keeper
+
+networks:
+  shared_network:
+    driver: bridge
+    external: true
